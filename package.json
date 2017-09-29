@@ -1,0 +1,35 @@
+{
+  "name": "edoc",
+  "version": "0.1.0",
+  "description": "A simple tool for creating HTML documentation",
+  "main": "edoc",
+  "bin": {
+    "edoc": "./edoc-cmd.js"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^4.0.2",
+    "@types/node": "^8.0.31",
+    "@types/commander": "^2.9.2",
+    "@types/handlebars": "^4.0.36",
+    "chalk": "^2.1.0",
+    "commander": "^2.11.0",
+    "fs-extra": "^4.0.2",
+    "handlebars": "^4.0.10",
+    "rsvp": "^4.0.2",
+    "spawn-args": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MarkRobertJohnson/edoc"
+  },
+  "author": "Mark Robert Johnson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MarkRobertJohnson/edoc/issues"
+  },
+  "homepage": "https://github.com/MarkRobertJohnson/edoc"
+}

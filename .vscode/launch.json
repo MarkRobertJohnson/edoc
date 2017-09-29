@@ -1,0 +1,55 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "scaffold",
+                "preLaunchTask": "build",
+                "program": "${workspaceRoot}\\edoc-cmd.ts",
+                "args": [
+                    "scaffold",
+                    "-o",
+                    "test-scaffold"
+                ],                
+                "runtimeArgs": [
+                    "--nolazy"
+                ],
+                "runtimeExecutable": null,
+                "sourceMaps": true,
+                "stopOnEntry": false,
+                "outFiles": [
+                    "${workspaceRoot}/*.js",
+                    "${workspaceRoot}/*.js.map",
+                    "${workspaceRoot}/source/**/*.js",
+                    "${workspaceRoot}/source/**/*.js.map"
+                ]
+            },
+            {
+                "type": "node",
+                "request": "launch",
+                "name": "run",
+                "preLaunchTask": "build",
+                "program": "${workspaceRoot}\\edoc-cmd.ts",
+                "args": [
+                    "run",
+                    "-i",
+                    "test-scaffold",
+                    "-o",
+                    "test-output"
+                ],
+                "runtimeArgs": [
+                    "--nolazy"
+                ],
+                "runtimeExecutable": null,
+                "sourceMaps": true,
+                "stopOnEntry": false,
+                "outFiles": [
+                    "${workspaceRoot}/*.js",
+                    "${workspaceRoot}/*.js.map",
+                    "${workspaceRoot}/source/**/*.js",
+                    "${workspaceRoot}/source/**/*.js.map"
+                ]
+            }
+        ]
+    }

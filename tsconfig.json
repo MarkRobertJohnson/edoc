@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "sourceMap": true,
+        "watch": false,
+        "target": "es6"
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "**/*.ts"
+    ],
+    "compileOnSave": true
+}
