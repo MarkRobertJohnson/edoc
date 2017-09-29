@@ -7,13 +7,15 @@
     "edoc": "./edoc-cmd.js"
   },
   "dependencies": {
-    "@types/fs-extra": "^4.0.2",
-    "@types/node": "^8.0.31",
     "@types/commander": "^2.9.2",
+    "@types/fs-extra": "^4.0.2",
+    "@types/glob": "^5.0.32",
     "@types/handlebars": "^4.0.36",
+    "@types/node": "^8.0.31",
     "chalk": "^2.1.0",
     "commander": "^2.11.0",
     "fs-extra": "^4.0.2",
+    "glob": "^7.1.2",
     "handlebars": "^4.0.10",
     "rsvp": "^4.0.2",
     "spawn-args": "^0.2.0"
