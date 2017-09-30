@@ -21,13 +21,13 @@ export class EasyDoc {
         this.options = options;
         //all user-specified paths must be normalized
         if (options.input) {
-            options.input = path.normalize(options.input+'/');
+            options.input = path.posix.normalize(options.input+'/');
         }
         if (options.output) {
-            options.output = path.normalize(options.output+'/');
+            options.output = path.posix.normalize(options.output+'/');
         }
         if (options.templates) {
-            options.templates = path.normalize(options.templates+'/');
+            options.templates = path.posix.normalize(options.templates+'/');
         } 
 
 
@@ -35,31 +35,31 @@ export class EasyDoc {
 
         if(options.input) {
             //By default, look at the input dir for templates, if not present then fall back to default templates
-            let templatesDir = path.join(options.input, this.templatesDirName);
+            let templatesDir = path.posix.normalize(options.input);
             if(!fs.existsSync(templatesDir)) {
                 console.log(chalk.green(`Custom templates dir '${templatesDir}' does not exist`));
-                templatesDir = path.join(__dirname, this.templatesDirName);
+                templatesDir = path.posix.join(__dirname, this.templatesDirName);
                 console.log(chalk.green(`Use default templates dir '${templatesDir}'`));
             } else {
                 console.log(chalk.green(`Using custom templates dir '${templatesDir}'`));
             }
-            options.templates = path.normalize(templatesDir);
+            options.templates = path.posix.normalize(templatesDir);
 
             if(! options.parameters ) {
-                options.parameters = path.join(options.input, "parameters.json");
+                options.parameters = path.posix.join(options.input, "parameters.json");
             }
   
             if (options.pages) {
-                options.pages = path.normalize(options.pages+'/');
+                options.pages = path.posix.normalize(options.pages+'/');
             } else {
-                options.pages = path.join(options.input, this.pagesDirName);
+                options.pages = path.posix.join(options.input, this.pagesDirName);
             }
         } 
     }
 
     scaffold() {
-       let sourceTemplatesDir = path.join(__dirname, this.templatesDirName);
-       let targetTemplatesDir = path.join(this.options.output);
+       let sourceTemplatesDir = path.posix.join(__dirname, this.templatesDirName);
+       let targetTemplatesDir = path.posix.join(this.options.output);
         if(this.options.templates) {
             sourceTemplatesDir = this.options.templates;
         }
@@ -83,22 +83,27 @@ export class EasyDoc {
 
     run() {
         //Copy all content
-        fsextra.copySync(this.options.templates, this.options.output);
+        fsextra.copySync(this.options.templates, this.options.output, {recursive: true, overwrite: true});
         this.tocPages = this.getTocPages(this.options.pages);
         this.processTemplates(this.options.templates, this.options.output,  this.tocPages);
     }
 
     processTemplates(templatePath: string, outputPath: string, tocPages: Page[]) {
 
-        glob(`${templatePath}/**/*.html`,{absolute: false, root: templatePath,cwd: templatePath,realpath: false}, (err: Error, matches: string[]) => {
+        let absoluteTemplatePath = this.normalizePath(path.posix.resolve(templatePath));
+        glob(path.posix.join(absoluteTemplatePath,'**/*.html'),{absolute: false, root: absoluteTemplatePath,cwd: templatePath,realpath: false}, (err: Error, matches: string[]) => {
             matches.forEach(file => {
-                file = path.normalize(file);
-                let fullPath = path.join(templatePath, file.replace(templatePath,''));
-                let outPath = path.join(outputPath, file.replace(templatePath, '')); 
+                file = this.normalizePath(file);
+                let fullPath = this.normalizePath(path.posix.join(absoluteTemplatePath, file.replace(absoluteTemplatePath,'')));
+                let outPath = this.normalizePath(path.posix.join(outputPath, file.replace(absoluteTemplatePath, ''))); 
 
                 this.processTemplate(fullPath, outPath, tocPages);
             });
         })
+    }
+
+    normalizePath(filepath: string): string {
+        return filepath.replace(/\\/g,"/",);
     }
 
     processTemplate(fullPath: string, outPath: string, tocPages: Page[]) {
@@ -120,9 +125,12 @@ export class EasyDoc {
 
     getTocPages(pagesDir: string): Page[] {
         let pages: Page[] = [] ;
-        let files = fsextra.readdirSync(path.join(pagesDir));
+        let files = fsextra.readdirSync(path.posix.join(pagesDir));
         files.forEach(filename => {
-            pages.push( this.getPage(filename))
+            //Only look at top level files
+            if(fsextra.statSync(path.posix.join(pagesDir,filename)).isFile()) {
+                pages.push( this.getPage(filename))
+            }
         });
 
         return pages;
@@ -148,7 +156,7 @@ export class EasyDoc {
             name = result[2];
         }
         //Then split by camel case
-        name = path.parse(name).name;
+        name = path.posix.parse(name).name;
         return this.splitCamelCase(name);
     }
 
