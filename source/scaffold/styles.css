@@ -5,6 +5,17 @@ html,body {
     font-size: 16px;
 }
 
+a {
+
+    cursor: pointer;
+  }
+  
+    a:hover,
+    a:focus {
+ 
+      text-decoration: none;
+    }
+
 .edoc-shell {
     display: flex;
     width: 100%;
@@ -25,6 +36,9 @@ html,body {
     padding: 20px 0px 0px 20px;
     color: white;
     margin:0px;
+}
+.edoc-left-menu a {
+    color: white;
 }
 
 .edoc-body {

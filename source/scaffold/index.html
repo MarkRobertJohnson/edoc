@@ -1,17 +1,43 @@
 <html>
 
 <head>
-        <link rel="stylesheet" href="styles.css">
+        {{#each SiteProperties.StyleSheets}}
+        <link rel="stylesheet" href="{{url}}"> 
+        {{/each}}        
+        
         <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
 
 <body>
     <script>
     function loadPage(page){   
-        document.getElementById('edoc-content-frame').src = page;
+
+        var contentFrame = document.getElementById('edoc-content-frame');
+        contentFrame.src = page;
+
+        
+        {{#if SiteProperties.setStyleSheetForAllPages}}
+        $('#edoc-content-frame').load(function() {
+            {{#each SiteProperties.StyleSheets}}
+            var cssLink = document.createElement("link");
+            cssLink.href = "../{{url}}"; 
+            cssLink.rel = "stylesheet"; 
+            cssLink.type = "text/css"; 
+            try {
+                contentFrame.contentDocument.head.appendChild(cssLink);
+            } catch(error) {
+                console.log(error);
+            }
+            
+            {{/each}}
+
+        });
+
+        {{/if}}
+
     }
 
-    $(document).ready(() => { 
+    $(document).ready(function() { 
         loadPage("{{toc.0.url}}")
     });
     </script>
@@ -25,6 +51,9 @@
         </div>
         <div class="edoc-shell">
             <div class="edoc-left-menu">
+                <div>
+                    <h2>Table of Contents</h2>
+                </div>
                   {{#each toc}}
                     <a href="javascript:loadPage('{{url}}')">{{title}}</a>
                   {{/each}}

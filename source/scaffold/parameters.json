@@ -3,12 +3,10 @@
     "SiteProperties":
     {
         "logo": "images/logo.png",
+        "setStyleSheetForAllPages": true,
         "StyleSheets": [
             {
                 "url": "styles.css"
-            },
-            {
-                "url": "../styles.css"
             }
         ]
     }
