@@ -1,6 +1,6 @@
 {
   "name": "edoc",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "description": "A simple tool for creating HTML documentation",
   "main": "edoc",
   "bin": {
